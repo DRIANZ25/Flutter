@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+
+class SettingsScreen extends StatelessWidget {
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.pinkAccent,
+        title: Text('SETTINGS'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+       
+          Image.network(
+            'https://tse3.mm.bing.net/th/id/OIP.WVmA1OMUTq0MSElnE3CBHAHaEK?pid=Api&P=0&h=220',
+            fit: BoxFit.cover,
+          ),
+
+    
+          Container(
+            color: Colors.black.withOpacity(0.3),
+          ),
+
+         
+          Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.pinkAccent, 
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              onPressed: () {
+                _showSnackBar(context, 'Deeznuts');
+              },
+              child: Text(
+                'Tap me indio',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
