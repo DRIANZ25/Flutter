@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+import 'drawer.dart';
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.pinkAccent,
+        centerTitle: true,
+        title: Text(
+          'COUNTER APP NG MGA POGI',
+          style: TextStyle(
+            backgroundColor: Colors.white,
+            color: Colors.pinkAccent,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
+      drawer: DrawerWidget(),
+
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://tse3.mm.bing.net/th/id/OIP.WVmA1OMUTq0MSElnE3CBHAHaEK?pid=Api&P=0&h=220',
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: const Text(
+          'Buenas Noche Amigo',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
