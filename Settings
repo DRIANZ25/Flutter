@@ -1,11 +1,74 @@
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
-  void _showSnackBar(BuildContext context, String message) {
+class SettingsScreen extends StatefulWidget {
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notificationsEnabled = true;
+
+  void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: Colors.pinkAccent,
+      ),
+    );
+  }
+
+  Widget _buildSettingTile({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    Widget? trailing,
+    VoidCallback? onTap,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        leading: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.pinkAccent.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: Colors.pinkAccent, size: 24),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        subtitle: subtitle != null
+            ? Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                ),
+              )
+            : null,
+        trailing: trailing,
+        onTap: onTap,
       ),
     );
   }
@@ -14,43 +77,89 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.pinkAccent,
-        title: Text('SETTINGS'),
+        title: Text(
+          'Settings',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: Icon(Icons.arrow_back_ios_new, size: 20),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-       
           Image.network(
             'https://tse3.mm.bing.net/th/id/OIP.WVmA1OMUTq0MSElnE3CBHAHaEK?pid=Api&P=0&h=220',
             fit: BoxFit.cover,
           ),
-
-    
           Container(
-            color: Colors.black.withOpacity(0.3),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.4),
+                  Colors.black.withOpacity(0.6),
+                ],
+              ),
+            ),
           ),
-
-         
-          Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent, 
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              ),
-              onPressed: () {
-                _showSnackBar(context, 'Deeznuts');
-              },
-              child: Text(
-                'Tap me indio',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+          SafeArea(
+            child: ListView(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              children: [
+                _buildSettingTile(
+                  icon: Icons.person_outline,
+                  title: 'Profile',
+                  subtitle: 'Manage your profile information',
+                  trailing: Icon(Icons.chevron_right, color: Colors.grey),
+                  onTap: () => _showSnackBar('Profile settings'),
+                ),
+                _buildSettingTile(
+                  icon: Icons.lock_outline,
+                  title: 'Privacy',
+                  subtitle: 'Control your privacy settings',
+                  trailing: Icon(Icons.chevron_right, color: Colors.grey),
+                  onTap: () => _showSnackBar('Privacy settings'),
+                ),
+                _buildSettingTile(
+                  icon: Icons.settings_outlined,
+                  title: 'Settings',
+                  subtitle: 'App preferences and configurations',
+                  trailing: Icon(Icons.chevron_right, color: Colors.grey),
+                  onTap: () => _showSnackBar('Settings'),
+                ),
+                _buildSettingTile(
+                  icon: Icons.help_outline,
+                  title: 'Help & Support',
+                  subtitle: 'Get help or contact support',
+                  trailing: Icon(Icons.chevron_right, color: Colors.grey),
+                  onTap: () => _showSnackBar('Help center'),
+                ),
+                _buildSettingTile(
+                  icon: Icons.notifications_outlined,
+                  title: 'Push Notifications',
+                  subtitle: 'Receive notifications from the app',
+                  trailing: Switch(
+                    value: _notificationsEnabled,
+                    onChanged: (value) {
+                      setState(() => _notificationsEnabled = value);
+                      _showSnackBar(
+                        value ? 'Notifications enabled' : 'Notifications disabled',
+                      );
+                    },
+                    activeColor: Colors.pinkAccent,
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
             ),
           ),
         ],
